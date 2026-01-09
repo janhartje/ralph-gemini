@@ -60,7 +60,9 @@ for i in $(seq 1 $MAX_ITERATIONS); do
   echo "═══════════════════════════════════════════════════════"
   
   # Run amp with the ralph prompt
-  OUTPUT=$(cat "$SCRIPT_DIR/prompt.md" | amp --dangerously-allow-all 2>&1 | tee /dev/stderr) || true
+  # Run Gemini wrapper
+  python3 -u "$SCRIPT_DIR/ralph_gemini.py" 2>&1 | tee /dev/stderr
+  OUTPUT="Checked" # Wrapper handles file ops, just need to loop properly
   
   # Check for completion signal
   if echo "$OUTPUT" | grep -q "<promise>COMPLETE</promise>"; then
